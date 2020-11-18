@@ -29,7 +29,6 @@ function findBiggestIslandSize(inputGrid) {
 
     for (let y = 0; y < inputGrid.length ; y++ ) {
         for (let x = 0 ; x < inputGrid[0].length ; x++) {
-            // console.log("x: ", x, "y: ", y);
             if (isNodeVisited(x, y)) {
                 continue;
             }
@@ -37,11 +36,6 @@ function findBiggestIslandSize(inputGrid) {
 
             let currentValue = inputGrid[y][x];
             let islandSize = dfs(x, y, currentValue);
-
-            console.log("islandNumber: ", currentValue);
-            console.log("islandSize: ", islandSize);
-            console.log('\n');
-
 
             // We put to put something here later 
             maxIslandSize = islandSize > maxIslandSize ? islandSize : maxIslandSize;
@@ -98,7 +92,6 @@ function findBiggestIslandSize(inputGrid) {
                 return;
             }
         }
-        // console.log("visitedNodes: ", visitedNodes)
         return currentIslandSize;
     }
 
@@ -147,7 +140,6 @@ function findBiggestIslandSize(inputGrid) {
         return output;
     }
 
-    console.log("total checked: ", Object.values(visitedNodes).length);
     return maxIslandSize;
 }
 
