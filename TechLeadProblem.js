@@ -1,6 +1,6 @@
 // Let's just use numbers to designate colors.
 const grid = [
-    [1, 1, 1, 2, 3],
+    [1, 1, 1, 1, 3],
     [1, 1, 2, 2, 3],
     [1, 4, 2, 3, 1]
 ];
@@ -28,7 +28,8 @@ function findBiggestIslandSize(inputGrid) {
     }
 
     for (let y = 0; y < inputGrid.length ; y++ ) {
-        for (let x = 0 ; x < inputGrid.length ; x++) {
+        for (let x = 0 ; x < inputGrid[0].length ; x++) {
+            // console.log("x: ", x, "y: ", y);
             if (isNodeVisited(x, y)) {
                 continue;
             }
@@ -39,6 +40,8 @@ function findBiggestIslandSize(inputGrid) {
 
             console.log("islandNumber: ", currentValue);
             console.log("islandSize: ", islandSize);
+            console.log('\n');
+
 
             // We put to put something here later 
             maxIslandSize = islandSize > maxIslandSize ? islandSize : maxIslandSize;
@@ -60,15 +63,20 @@ function findBiggestIslandSize(inputGrid) {
         populateVisitedNodes(x, y);
 
         neighborCoordinates.forEach(neighborCoordinate => {
-            if (isNodeVisited(neighborCoordinates[0], neighborCoordinate[1])) {
+            const neighborX = neighborCoordinate[0];
+            const neighborY = neighborCoordinate[1];
+            if (isNodeVisited(neighborX, neighborY)) {
                 return;
             }
-            dfsHelper(neighborCoordinate[0], neighborCoordinate[1]);
+            dfsHelper(neighborX, neighborY);
         });
 
         function dfsHelper(x, y) {
             if (inputGrid[y][x] === currentValue) {
+
+                // This NEEDS to go after the check for currentValue. 
                 populateVisitedNodes(x, y);
+
                 currentIslandSize += 1;
                 // Here, we would want to somehow mark that this node has been checked
 
@@ -139,7 +147,7 @@ function findBiggestIslandSize(inputGrid) {
         return output;
     }
 
-
+    console.log("total checked: ", Object.values(visitedNodes).length);
     return maxIslandSize;
 }
 
