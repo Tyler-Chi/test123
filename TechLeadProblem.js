@@ -1,7 +1,7 @@
 // Let's just use numbers to designate colors.
 const grid = [
-    [1, 1, 1, 1, 3],
-    [1, 1, 2, 1, 3],
+    [1, 1, 1, 2, 3],
+    [1, 1, 2, 2, 3],
     [1, 4, 2, 3, 1]
 ];
 
@@ -34,8 +34,11 @@ function findBiggestIslandSize(inputGrid) {
             }
             // By this time, we know that the node is unvisited.
 
-            let currentValue = inputGrid[y, x];
+            let currentValue = inputGrid[y][x];
             let islandSize = dfs(x, y, currentValue);
+
+            console.log("islandNumber: ", currentValue);
+            console.log("islandSize: ", islandSize);
 
             // We put to put something here later 
             maxIslandSize = islandSize > maxIslandSize ? islandSize : maxIslandSize;
@@ -56,13 +59,16 @@ function findBiggestIslandSize(inputGrid) {
 
         populateVisitedNodes(x, y);
 
-        neighborCoordinates.forEach(neighborCoordinates => {
-            dfsHelper(neighborCoordinates[0], neighborCoordinates[1]);
+        neighborCoordinates.forEach(neighborCoordinate => {
+            if (isNodeVisited(neighborCoordinates[0], neighborCoordinate[1])) {
+                return;
+            }
+            dfsHelper(neighborCoordinate[0], neighborCoordinate[1]);
         });
 
         function dfsHelper(x, y) {
-            populateVisitedNodes(x, y);
             if (inputGrid[y][x] === currentValue) {
+                populateVisitedNodes(x, y);
                 currentIslandSize += 1;
                 // Here, we would want to somehow mark that this node has been checked
 
@@ -76,7 +82,7 @@ function findBiggestIslandSize(inputGrid) {
                     if (isNodeVisited(nextX, nextY)) {
                         return;
                     }
-                    dfsHelper(nextCoordinate[0], nextCoordinate[1]);
+                    dfsHelper(nextX, nextY);
                 });
 
             } else {
@@ -84,6 +90,7 @@ function findBiggestIslandSize(inputGrid) {
                 return;
             }
         }
+        // console.log("visitedNodes: ", visitedNodes)
         return currentIslandSize;
     }
 
@@ -108,26 +115,27 @@ function findBiggestIslandSize(inputGrid) {
 
         const possibleXValues = [];
         const possibleYValues = [];
-        if (x + 1 <= inputGridWidth) {
+        if (x + 1 < inputGridWidth) {
             possibleXValues.push(x+1);
         }
         if (x - 1 >= 0) {
             possibleXValues.push(x - 1);
         }
-        if ( y + 1 <= inputGridHeight) {
+        if ( y + 1 < inputGridHeight) {
             possibleYValues.push(y + 1)
         }
         if (y - 1 >= 0) {
             possibleYValues.push(y - 1);
         }
 
-        // So at this point, possibleXValues would be something liek [ ]
-        // possibleYValues would be something like [1, 3]
-        possibleXValues.forEach((x) => {
-            possibleYValues.forEach((y) => {
-                output.push([x, y]);
-            })
-        });
+        possibleXValues.forEach(xValue => {
+            output.push([xValue, y]);
+        })
+
+        possibleYValues.forEach(yValue => {
+            output.push([x, yValue]);
+        })
+
         return output;
     }
 
