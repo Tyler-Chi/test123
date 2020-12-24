@@ -145,4 +145,3 @@ function findBiggestIslandSize(inputGrid) {
 
 let test = findBiggestIslandSize(grid);
 console.log("test: ", test);
-
